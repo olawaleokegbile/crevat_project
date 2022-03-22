@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <style>
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      td,
+      th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+
+      tr:nth-child(even) {
+        background-color: #dddddd;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="d-flex justify-content-center">
+      <div class="spinner-border" role="status" id="loading">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+
+    <div>
+      <h1>Contacts</h1>
+    </div>
+    <table id="contacts"></table>
+
+    <script>
+      // api url
+      const api_url = "https://crevat.herokuapp.com/contact";
+
+      // Defining async function
+      async function getapi(url) {
+        // Storing response
+        const response = await fetch(url);
+
+        // Storing data in form of JSON
+        var data = await response.json();
+        console.log(data);
+        if (response) {
+          hideloader();
+        }
+        show(data);
+      }
+      // Calling that async function
+      getapi(api_url);
+
+      // Function to hide the loader
+      function hideloader() {
+        document.getElementById("loading").style.display = "none";
+      }
+      // Function to define innerHTML for HTML table
+      function show(data) {
+        let tab = `<tr>
+		<th>Full-Name</th>
+		<th>Email</th>
+		<th>Subject</th>
+		<th>Message</th>
+		</tr>`;
+
+        // Loop to access all rows
+        for (let r of data) {
+          tab += `<tr>
+	          <td>${r.fullname} </td>
+          	<td>${r.email}</td>
+            <td>${r.subject}</td>
+	          <td>${r.message}</td>		
+          </tr>`;
+        }
+        // Setting innerHTML as tab variable
+        document.getElementById("contacts").innerHTML = tab;
+      }
+    </script>
+  </body>
+</html>
